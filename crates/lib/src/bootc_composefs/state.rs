@@ -129,9 +129,10 @@ pub(crate) fn write_composefs_state(
     
     let var_symlink_path = state_path.join("var");
     
-    if !var_symlink_path.exists() {
-        symlink(&var_symlink_target, &var_symlink_path)
-            .context("Failed to create symlink for /var")?;
+    match symlink(&var_symlink_target, &var_symlink_path) {
+        Ok(_) => (),
+        Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => (),
+        Err(e) => return Err(anyhow::Error::new(e).context("Failed to create symlink for /var")),
     }
 
     let ImageReference {
