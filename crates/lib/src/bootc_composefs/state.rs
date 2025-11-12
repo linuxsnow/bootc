@@ -117,18 +117,24 @@ pub(crate) fn write_composefs_state(
         .join(STATE_DIR_RELATIVE)
         .join(deployment_id.to_hex());
 
+    tracing::debug!("Creating composefs state dir at {}", state_path.display());
     create_dir_all(state_path.join("etc"))?;
 
     copy_etc_to_state(&root_path, &deployment_id.to_hex(), &state_path)?;
 
     let actual_var_path = root_path.join(SHARED_VAR_PATH);
     create_dir_all(&actual_var_path)?;
-    
-    let var_symlink_target = path_relative_to(state_path.as_std_path(), actual_var_path.as_std_path())
-        .context("Getting var symlink path")?;
-    
+
+    let var_symlink_target =
+        path_relative_to(state_path.as_std_path(), actual_var_path.as_std_path())
+            .context("Getting var symlink path")?;
+
     let var_symlink_path = state_path.join("var");
-    
+    tracing::debug!(
+        "Creating symlink for /var at {} pointing to {}",
+        var_symlink_path.display(),
+        var_symlink_target.display()
+    );
     match symlink(&var_symlink_target, &var_symlink_path) {
         Ok(_) => (),
         Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => (),
@@ -170,6 +176,10 @@ pub(crate) fn write_composefs_state(
         .context("Failed to write to .origin file")?;
 
     if staged {
+        tracing::debug!(
+            "Writing staged deployment id to {}",
+            COMPOSEFS_STAGED_DEPLOYMENT_FNAME
+        );
         std::fs::create_dir_all(COMPOSEFS_TRANSIENT_STATE_DIR)
             .with_context(|| format!("Creating {COMPOSEFS_TRANSIENT_STATE_DIR}"))?;
 
