@@ -275,7 +275,7 @@ fn write_bls_boot_entries_to_disk(
     tracing::debug!(
         "Writing BLS boot entries to disk for deployment {} at boot_dir {}",
         deployment_id.to_hex(),
-        boot_dir.as_os_str()
+        boot_dir.as_str()
     );
     let id_hex = deployment_id.to_hex();
 
