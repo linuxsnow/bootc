@@ -131,7 +131,7 @@ pub(crate) fn write_composefs_state(
 
     let var_symlink_path = state_path.join("var");
     tracing::debug!(
-        "Creating symlink for /var at {} pointing to {}",
+        "Creating symlink for /var at {:?} pointing to {:?}",
         var_symlink_path.as_str(),
         var_symlink_target.as_str()
     );
