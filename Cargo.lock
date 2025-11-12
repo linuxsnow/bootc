@@ -197,6 +197,7 @@ dependencies = [
  "rustix 1.0.8",
  "serde",
  "toml 0.9.5",
+ "tracing",
 ]
 
 [[package]]
