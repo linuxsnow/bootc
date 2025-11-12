@@ -115,13 +115,14 @@ pub fn mount_at_wrapper(
 /// Wrapper around [`rustix::fs::openat`]
 #[context("Opening dir {name:?}")]
 pub fn open_dir(dirfd: impl AsFd, name: impl AsRef<Path> + Debug) -> Result<OwnedFd> {
+    tracing::debug!("Opening dir {:?} with fd {:?}", name, dirfd.as_fd().clone());
+
     let res = openat(
         dirfd,
         name.as_ref(),
         OFlags::PATH | OFlags::DIRECTORY | OFlags::CLOEXEC,
         Mode::empty(),
     );
-    tracing::debug!("Opened dir {:?} with fd {:?}", name, dirfd.as_fd().clone());
     Ok(res?)
 }
 
