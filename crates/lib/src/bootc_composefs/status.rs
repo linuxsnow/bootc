@@ -96,6 +96,10 @@ pub(crate) fn get_sorted_type1_boot_entries(
     boot_dir: &Dir,
     ascending: bool,
 ) -> Result<Vec<BLSConfig>> {
+    tracing::debug!(
+        "Getting sorted Type1 boot entries from {}",
+        boot_dir.path().display()
+    );
     let mut all_configs = vec![];
 
     for entry in boot_dir.read_dir(TYPE1_ENT_PATH)? {

@@ -117,7 +117,7 @@ pub(crate) fn write_composefs_state(
         .join(STATE_DIR_RELATIVE)
         .join(deployment_id.to_hex());
 
-    tracing::debug!("Creating composefs state dir at {}", state_path.display());
+    tracing::debug!("Creating composefs state dir at {}", state_path.as_os_str());
     create_dir_all(state_path.join("etc"))?;
 
     copy_etc_to_state(&root_path, &deployment_id.to_hex(), &state_path)?;
@@ -132,8 +132,8 @@ pub(crate) fn write_composefs_state(
     let var_symlink_path = state_path.join("var");
     tracing::debug!(
         "Creating symlink for /var at {} pointing to {}",
-        var_symlink_path.display(),
-        var_symlink_target.display()
+        var_symlink_path.as_os_str(),
+        var_symlink_target.as_os_str()
     );
     match symlink(&var_symlink_target, &var_symlink_path) {
         Ok(_) => (),

@@ -56,7 +56,6 @@ pub(crate) fn rename_exchange_user_cfg(entries_dir: &Dir) -> Result<()> {
 #[context("Atomically exchanging BLS entries")]
 pub(crate) fn rename_exchange_bls_entries(entries_dir: &Dir) -> Result<()> {
     tracing::debug!("Atomically exchanging {STAGED_BOOT_LOADER_ENTRIES} and {BOOT_LOADER_ENTRIES}");
-    tracing::debug!("Entries dir path: {}", entries_dir.path().display());
     renameat_with(
         &entries_dir,
         STAGED_BOOT_LOADER_ENTRIES,
