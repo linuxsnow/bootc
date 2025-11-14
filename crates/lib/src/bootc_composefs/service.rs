@@ -10,7 +10,7 @@ use crate::composefs_consts::BOOTC_FINALIZE_STAGED_SERVICE;
 #[context("Starting finalize staged service")]
 pub(crate) fn start_finalize_stated_svc() -> Result<()> {
     let cmd_status = Command::new("systemctl")
-        .args(["start", "--quiet", BOOTC_FINALIZE_STAGED_SERVICE])
+        .args(["start", BOOTC_FINALIZE_STAGED_SERVICE])
         .status()
         .context("Starting finalize service")?;
 
